@@ -1,6 +1,92 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <root>
   <PostCose code ="50000">
+    <Street>вул. Автозаводська</Street>
+    <Street>вул. Автоматична</Street>
+    <Street>вул. Азовська</Street>
+    <Street>вул. Анатолія Ліпицького</Street>
+  </PostCose>
+  
+  <PostCose code ="50001">
+    <Street>вул. 111 кілометр</Street>
+    <Street>вул. Бандуристів</Street>
+    <Street>вул. Верхня Антонівка</Street>
+    <Street>вул. Вєнєціанова</Street>
+    <Street>вул. Костя Пестушка</Street>
     <Street></Street>
+  </PostCose>
+  
+  <PostCose code ="50002">
+    <Street>вул. Балхашська</Street>
+    <Street>вул. Білецького</Street>
+    <Street>вул. Ботєва</Street>
+    <Street>вул. Волейбольна</Street>
+    <Street>вул. Газетна</Street>
+    <Street>вул. Декабристів</Street>
+    <Street>вул. Івана Франка</Street>
+    <Street>вул. Кавказська</Street>
+    <Street>вул. Клайпедська</Street>
+    <Street>вул. Кобилянського</Street>
+  </PostCose>
+  
+  <PostCose code ="50004">
+    <Street>вул. Академіка Белелюбського</Street>
+    <Street>вул. Бажана</Street>
+    <Street>вул. Балтійська</Street>
+    <Street>вул. Беренга</Street>
+    <Street>вул. Болгарська</Street>
+    <Street>вул. Бориса Мозолевського</Street>
+    <Street>вул. Братиславська</Street>
+    <Street>вул. Вівальді</Street>
+    <Street>вул. Гданцівська</Street>
+    <Street>вул. Гірничозаводська</Street>
+  </PostCose>
+  
+  <PostCose code ="50005">
+    <Street>вул. Афіногенова</Street>
+    <Street>вул. Бардіна</Street>
+    <Street>вул. Барнаульська</Street>
+    <Street>вул. Бородіна</Street>
+    <Street>вул. Бузинова</Street>
+    <Street>вул. Виборгська</Street>
+    <Street>вул. Вітчізняна</Street>
+    <Street>вул. Вокзальна</Street>
+    <Street>вул. Воліна</Street>
+    <Street>вул. Галахівська</Street>
+    <Street>вул. Даля</Street>
+    <Street>вул. Джека Лондона</Street>
+    <Street>вул. Евпаторійська</Street>
+    <Street>вул. Заводська</Street>
+    <Street>вул. Залізноводська</Street>
+  </PostCose>
+    
+  <PostCose code ="50006">
+    <Street>вул. Акціонерна</Street>
+    <Street>вул. Вадима Гурова</Street>
+    <Street>вул. Ветеранів праці</Street>
+    <Street>вул. Домнобудівників</Street>
+    <Street>вул. Ландау</Street>
+    <Street>вул. Соборності</Street>
+    <Street>вул. Стеклова</Street>
+    <Street>вул. Степана Тільги</Street>
+    <Street>вул. Цимлянська</Street>
+    <Street>просп. Металургів</Street>
+  </PostCose>
+    
+  <PostCose code ="50008">
+    <Street>вул. Володимира Великого</Street>
+    <Street>вул. Генерала Радієвського</Street>
+    <Street>вул. Космонавтів</Street>
+    <Street>вул. Соборна</Street>
+    <Street>майдан 30- річчя Перемоги</Street>
+  </PostCose>
+    
+  <PostCose code ="50038">
+    <Street>бульв. Європейський</Street>
+    <Street>вул. Алітна</Street>
+    <Street>вул. Водоп'янова</Street>
+    <Street>вул. Заозерна</Street>
+    <Street>вул. Сімонова</Street>
+    <Street>вул. Цементна</Street>
   </PostCose>
 </root>
