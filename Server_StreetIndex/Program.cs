@@ -40,24 +40,33 @@ namespace Server_StreetIndex
                 {
                     Socket socketClient = socketServer.Accept();
 
-
-                    Console.WriteLine("Client endPoint: " +
-                        socketClient.RemoteEndPoint.ToString());
-                    Console.WriteLine("socketClient.ReceiveBufferSize: " 
-                        + socketClient.ReceiveBufferSize.ToString());
-                    Console.WriteLine("socketClient.Available: "
-                        + socketClient.Available.ToString());
                     // Получаем сообщение.
                     StringBuilder stringBuilder = new StringBuilder();
                     int bytes = 0;  // Кол-во полученных байт.
                     // Буфер для получаемых данных.
-                    byte[] data = new byte[socketClient.ReceiveBufferSize];
+                    byte[] buffer = new byte[1024];
 
+                    
                     do
                     {
-                        // TODO
+                        // Получаем данные.
+                        bytes = socketClient.Receive(
+                            buffer, 
+                            buffer.Length, 
+                            SocketFlags.None);
+                        stringBuilder.Append(
+                            Encoding.Unicode.GetString(buffer, 0, bytes));
 
                     } while (socketClient.Available > 0);
+
+                    // TODO отправить ответ
+
+                    Console.WriteLine("[test] -> post code: " + stringBuilder);
+
+
+                    // Закрываем сокет.
+                    socketClient.Shutdown(SocketShutdown.Both);
+                    socketClient.Close();
                 }
 
             }
