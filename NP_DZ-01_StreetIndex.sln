@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28010.2050
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server_StreetIndex", "Server_StreetIndex\Server_StreetIndex.csproj", "{3A074B5B-191B-4BE3-A025-D796CB0B9A6E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client_StreetIndex", "Client_StreetIndex\Client_StreetIndex.csproj", "{3765EF1B-5A15-4913-B901-BF45374D8D2E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{3A074B5B-191B-4BE3-A025-D796CB0B9A6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3A074B5B-191B-4BE3-A025-D796CB0B9A6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3A074B5B-191B-4BE3-A025-D796CB0B9A6E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3765EF1B-5A15-4913-B901-BF45374D8D2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3765EF1B-5A15-4913-B901-BF45374D8D2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3765EF1B-5A15-4913-B901-BF45374D8D2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3765EF1B-5A15-4913-B901-BF45374D8D2E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
