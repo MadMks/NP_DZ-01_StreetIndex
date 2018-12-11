@@ -50,7 +50,7 @@ namespace Server_StreetIndex
                     do
                     {
                         // Получаем данные.
-                        bytes = socketClient.Receive(
+                        bytes += socketClient.Receive(
                             buffer, 
                             buffer.Length, 
                             SocketFlags.None);
@@ -59,10 +59,17 @@ namespace Server_StreetIndex
 
                     } while (socketClient.Available > 0);
 
-                    // TODO отправить ответ
-
+                    
+                    // TEMP вывод на сервере
                     Console.WriteLine("[test] -> post code: " + stringBuilder);
 
+
+                    // TODO отправить ответ
+                    // поиск почтового индекса в файле xml
+                    // если такой есть -> вернуть список улиц.
+                    string temp = "test " + stringBuilder;
+                    buffer = Encoding.Unicode.GetBytes(temp);
+                    socketClient.Send(buffer);
 
                     // Закрываем сокет.
                     socketClient.Shutdown(SocketShutdown.Both);

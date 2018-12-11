@@ -18,7 +18,7 @@ namespace Client_StreetIndex
         IPAddress ipServer;
         IPEndPoint ipEndPoint;
 
-        Socket socket = null;
+        Socket clientSocket = null;
 
         string strPostCode = null;
 
@@ -32,24 +32,41 @@ namespace Client_StreetIndex
         {
             this.ipServer = IPAddress.Parse("127.0.0.1");
             this.ipEndPoint = new IPEndPoint(ipServer, port);
-
-            
         }
 
         private void buttonSend_Click(object sender, EventArgs e)
         {
-            this.socket = new Socket(
+            this.clientSocket = new Socket(
                 AddressFamily.InterNetwork,
                 SocketType.Stream,
                 ProtocolType.IP);
 
-            socket.Connect(ipEndPoint);
+            clientSocket.Connect(ipEndPoint);
 
-            if (socket.Connected)
+            if (clientSocket.Connected)
             {
                 strPostCode = textBoxPostCode.Text;
-                socket.Send(Encoding.Unicode.GetBytes(strPostCode));
+                clientSocket.Send(Encoding.Unicode.GetBytes(strPostCode));
+
+                // для ответа
+                byte[] buffer = new byte[1024];
+                int bytes = 0;
+                StringBuilder temp = new StringBuilder();
+
+                do
+                {
+                    bytes = clientSocket.Receive(
+                        buffer,
+                        buffer.Length,
+                        SocketFlags.None);
+
+                    temp.Append(Encoding.Unicode.GetString(buffer, 0, bytes));
+
+                } while (clientSocket.Available > 0);
+                
+                this.listBoxStreets.Items.Add(temp);
             }
+
 
             //socket.Shutdown(SocketShutdown.Both);
             //socket.Close();
