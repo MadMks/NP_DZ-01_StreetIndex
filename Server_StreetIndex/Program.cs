@@ -1,20 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace Server_StreetIndex
 {
     class Program
     {
         static int port = 8000;
+        static string pathFile = "data.xml";
+
+        static List<string> streets = null;
 
         static void Main(string[] args)
         {
-
             Socket socketServer = new Socket(
                 AddressFamily.InterNetwork,
                 SocketType.Stream,
@@ -44,32 +48,47 @@ namespace Server_StreetIndex
                     StringBuilder stringBuilder = new StringBuilder();
                     int bytes = 0;  // Кол-во полученных байт.
                     // Буфер для получаемых данных.
-                    byte[] buffer = new byte[1024];
+                    byte[] buffer = new byte[socketClient.Available];
 
-                    
-                    do
-                    {
-                        // Получаем данные.
-                        bytes += socketClient.Receive(
-                            buffer, 
-                            buffer.Length, 
-                            SocketFlags.None);
-                        stringBuilder.Append(
-                            Encoding.Unicode.GetString(buffer, 0, bytes));
+                    // Загрузка получаемого сообщения.
+                    bytes = socketClient.Receive(buffer);
+                    stringBuilder.Append(
+                        Encoding.Unicode.GetString(buffer, 0, bytes));
+                    //do
+                    //{
+                    //    // Получаем данные.
+                    //    bytes += socketClient.Receive(
+                    //        buffer, 
+                    //        buffer.Length, 
+                    //        SocketFlags.None);
+                    //    stringBuilder.Append(
+                    //        Encoding.Unicode.GetString(buffer, 0, bytes));
 
-                    } while (socketClient.Available > 0);
+                    //} while (socketClient.Available > 0);
 
                     
                     // TEMP вывод на сервере
                     Console.WriteLine("[test] -> post code: " + stringBuilder);
 
 
-                    // TODO отправить ответ
-                    // поиск почтового индекса в файле xml
+                    // Отправка ответа.
+
+                    // Поиск почтового индекса в файле xml
+                    streets = SearchStreetByCode(
+                        Int32.Parse(stringBuilder.ToString())
+                        );
                     // если такой есть -> вернуть список улиц.
-                    string temp = "test " + stringBuilder;
-                    buffer = Encoding.Unicode.GetBytes(temp);
-                    socketClient.Send(buffer);
+                    if (streets != null)
+                    {
+                        Console.WriteLine("Улицы найдены!");
+                        Console.ReadKey();
+                        //socketClient.Send(buffer);
+                    }
+
+
+                    //string temp = "test " + stringBuilder;
+                    //buffer = Encoding.Unicode.GetBytes(temp);
+                    //socketClient.Send(buffer);
 
                     // Закрываем сокет.
                     socketClient.Shutdown(SocketShutdown.Both);
@@ -84,5 +103,43 @@ namespace Server_StreetIndex
 
 
         }
+
+        static List<string> SearchStreetByCode(int postCode)
+        {
+            List<string> streets = new List<string>();
+
+            XmlDocument xmlDocument = new XmlDocument();
+            if (File.Exists(pathFile))
+            {
+                xmlDocument.Load(pathFile);
+
+                foreach (XmlNode node in xmlDocument.DocumentElement)
+                {
+                    if (postCode == Int32.Parse(node.Attributes[0].Value))
+                    {
+                        //streets.AddRange(node.ChildNodes as IEnumerable<string>);
+                        for (int i = 0; i < node.ChildNodes.Count; i++)
+                        {
+                            streets.Add(node.ChildNodes[i].InnerText);
+                        }
+                        break;
+                    }
+
+                    Console.WriteLine("поиск ...");
+                }
+            }
+            else
+            {
+                Console.WriteLine("\n [error] " +
+                    "Файл не найден -> " + pathFile);
+            }
+
+            return streets;
+        }
+
+        //static List<string> LoadingDataFromXML()
+        //{
+
+        //}
     }
 }
