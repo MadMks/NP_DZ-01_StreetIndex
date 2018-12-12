@@ -64,11 +64,7 @@ namespace Client_StreetIndex
                 //streets = ByteArrayToListString(buffer);
 
 
-                if (streets != null)
-                {
-                    // Заносим данные в listbox
-                    //this.listBoxStreets.DataSource = streets;
-                }
+                
                 List<byte> listBytes = new List<byte>();
                 do
                 {
@@ -76,12 +72,19 @@ namespace Client_StreetIndex
                         buffer,
                         buffer.Length,
                         SocketFlags.None);
+
                     listBytes.AddRange(buffer);
-                    //temp.Append(Encoding.Unicode.GetString(buffer, 0, bytes));
+                    
                     //Array.Clear(buffer, 0, buffer.Length);
                 } while (clientSocket.Available > 0);
-
+                streets = ByteArrayToListString(listBytes.ToArray());
                 //this.listBoxStreets.Items.Add(temp);
+
+                if (streets != null)
+                {
+                    // Заносим данные в listbox
+                    this.listBoxStreets.DataSource = streets;
+                }
             }
 
 
