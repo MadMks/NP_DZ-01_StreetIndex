@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
@@ -81,8 +82,12 @@ namespace Server_StreetIndex
                     if (streets != null)
                     {
                         Console.WriteLine("Улицы найдены!");
-                        Console.ReadKey();
-                        //socketClient.Send(buffer);
+                        //Console.ReadKey();
+                        buffer = ObjectToByteArray(streets);
+                        socketClient.Send(buffer);
+
+                        Console.WriteLine(" Ответ отправлен buffer = "
+                            + buffer.Length);
                     }
 
 
@@ -122,7 +127,8 @@ namespace Server_StreetIndex
                         {
                             streets.Add(node.ChildNodes[i].InnerText);
                         }
-                        break;
+
+                        return streets;
                     }
 
                     Console.WriteLine("поиск ...");
@@ -134,7 +140,20 @@ namespace Server_StreetIndex
                     "Файл не найден -> " + pathFile);
             }
 
-            return streets;
+            return null;
+        }
+
+        // Конвертирование объекта в массив байтов.
+        static byte[] ObjectToByteArray(object obj)
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                formatter.Serialize(memoryStream, obj);
+
+                return memoryStream.ToArray();
+            }
         }
 
         //static List<string> LoadingDataFromXML()
