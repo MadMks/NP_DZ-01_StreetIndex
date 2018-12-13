@@ -51,20 +51,13 @@ namespace Client_StreetIndex
                 strPostCode = textBoxPostCode.Text;
                 clientSocket.Send(Encoding.Unicode.GetBytes(strPostCode));
 
-                // Переменные для ответа.   // TODO упростить как на сервере.
-                byte[] buffer = new byte[100];
+
+                // Переменные для ответа.
+                byte[] buffer = new byte[1024];
                 int bytes = 0;
-                //StringBuilder temp = new StringBuilder();
                 List<string> streets = null;
 
                 // Получаем ответ.
-                //bytes = clientSocket.Receive(
-                //    buffer, buffer.Length, SocketFlags.None
-                //    );
-                //streets = ByteArrayToListString(buffer);
-
-
-                
                 List<byte> listBytes = new List<byte>();
                 do
                 {
@@ -74,22 +67,34 @@ namespace Client_StreetIndex
                         SocketFlags.None);
 
                     listBytes.AddRange(buffer);
-                    
+
                     //Array.Clear(buffer, 0, buffer.Length);
                 } while (clientSocket.Available > 0);
-                streets = ByteArrayToListString(listBytes.ToArray());
-                //this.listBoxStreets.Items.Add(temp);
 
-                if (streets != null)
+                if (bytes > 0)
                 {
-                    // Заносим данные в listbox
-                    this.listBoxStreets.DataSource = streets;
+                    streets = ByteArrayToListString(listBytes.ToArray());
+
+                    OutputDataToListBox(streets);
+                }
+                else
+                {
+                    MessageBox.Show("По данному индексу улиц нет.");
                 }
             }
 
 
             //socket.Shutdown(SocketShutdown.Both);
             //socket.Close();
+        }
+
+        private void OutputDataToListBox(List<string> streets)
+        {
+            if (streets != null)
+            {
+                // Заносим данные в listbox
+                this.listBoxStreets.DataSource = streets;
+            }
         }
 
         private List<string> ByteArrayToListString(byte[] buffer)
