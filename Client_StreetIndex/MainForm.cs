@@ -35,28 +35,40 @@ namespace Client_StreetIndex
         {
             this.ipServer = IPAddress.Parse(ip);
             this.ipEndPoint = new IPEndPoint(ipServer, port);
+
+            // Для вывода доступных индексов (для примера).
+            this.textBoxAvailableIndex.Text =
+                "50000" + Environment.NewLine +
+                "50001" + Environment.NewLine +
+                "50002" + Environment.NewLine +
+                "50004" + Environment.NewLine +
+                "50005" + Environment.NewLine +
+                "50006" + Environment.NewLine +
+                "50008" + Environment.NewLine +
+                "50038";
         }
+
 
         private void buttonSend_Click(object sender, EventArgs e)
         {
             string postCode = textBoxPostCode.Text;
 
-            Task.Factory.StartNew( () => DataExchange(postCode));
+            Task.Factory.StartNew(() => DataExchange(postCode));
         }
 
 
         /// <summary>
-        /// 
+        /// Обмен данными.
         /// </summary>
-        /// <param name="postCode"></param>
+        /// <param name="postCode">Почтовый индекс.</param>
         private void DataExchange(string postCode)
         {
             try
             {
                 this.clientSocket = new Socket(
-                AddressFamily.InterNetwork,
-                SocketType.Stream,
-                ProtocolType.IP);
+                    AddressFamily.InterNetwork,
+                    SocketType.Stream,
+                    ProtocolType.IP);
 
                 clientSocket.Connect(ipEndPoint);
 
@@ -73,11 +85,17 @@ namespace Client_StreetIndex
             {
                 MessageBox.Show(ex.Message);
             }
+            finally
+            {
+                // Закрываем сокет.
+                //clientSocket.Shutdown(SocketShutdown.Both);
+                //clientSocket.Close();
+            }
         }
 
 
         /// <summary>
-        /// 
+        /// Получение данных.
         /// </summary>
         private void ReceivingData()
         {
@@ -115,6 +133,11 @@ namespace Client_StreetIndex
             }
         }
 
+
+        /// <summary>
+        /// Вывод данных в listBox.
+        /// </summary>
+        /// <param name="streets">Список улиц.</param>
         private void OutputDataToListBox(List<string> streets)
         {
             if (streets != null)
@@ -124,6 +147,12 @@ namespace Client_StreetIndex
             }
         }
 
+
+        /// <summary>
+        /// Конвертирование массива байтов в объект (список строк).
+        /// </summary>
+        /// <param name="buffer">Массив байтов.</param>
+        /// <returns>Список строк.</returns>
         private List<string> ByteArrayToListString(byte[] buffer)
         {
             using (MemoryStream memoryStream = new MemoryStream())
@@ -135,5 +164,6 @@ namespace Client_StreetIndex
                 return obj as List<string>;
             }
         }
+
     }
 }
