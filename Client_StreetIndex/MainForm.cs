@@ -38,6 +38,17 @@ namespace Client_StreetIndex
 
         private void buttonSend_Click(object sender, EventArgs e)
         {
+            Task.Factory.StartNew( () => DataExchange(strPostCode));
+
+            
+
+
+            //socket.Shutdown(SocketShutdown.Both);
+            //socket.Close();
+        }
+
+        private void DataExchange(string strPostCode)
+        {
             this.clientSocket = new Socket(
                 AddressFamily.InterNetwork,
                 SocketType.Stream,
@@ -50,7 +61,13 @@ namespace Client_StreetIndex
                 // Посылаем запрос (почтовый индекс).
                 strPostCode = textBoxPostCode.Text;
                 clientSocket.Send(Encoding.Unicode.GetBytes(strPostCode));
-
+                #region Testing_Async
+                //SocketAsyncEventArgs args = new SocketAsyncEventArgs();
+                //args.AcceptSocket = clientSocket;
+                //byte[] tt = Encoding.Unicode.GetBytes(strPostCode);
+                //args.SetBuffer(tt, 0, tt.Length);
+                //clientSocket.SendAsync(args);
+                #endregion
 
                 // Переменные для ответа.
                 byte[] buffer = new byte[1024];
@@ -82,10 +99,6 @@ namespace Client_StreetIndex
                     MessageBox.Show("По данному индексу улиц нет.");
                 }
             }
-
-
-            //socket.Shutdown(SocketShutdown.Both);
-            //socket.Close();
         }
 
         private void OutputDataToListBox(List<string> streets)

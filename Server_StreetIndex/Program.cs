@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
 
@@ -81,6 +82,13 @@ namespace Server_StreetIndex
                     // если такой есть -> вернуть список улиц.
                     if (streets != null)
                     {
+                        // Иммитация долгой загрузки.
+                        for (int i = 0; i < 5; i++)
+                        {
+                            Thread.Sleep(1000);
+                            Console.WriteLine($"t: {i + 1}");
+                        }
+
                         Console.WriteLine("Улицы найдены!");
                         //Console.ReadKey();
                         buffer = ObjectToByteArray(streets);
