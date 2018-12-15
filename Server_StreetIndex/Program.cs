@@ -76,7 +76,7 @@ namespace Server_StreetIndex
                     // если такой есть -> вернуть список улиц.
                     if (streets != null)
                     {
-                        LongBootSimulation();
+                        //LongBootSimulation();     // For DEBUG
 
                         Console.WriteLine("[info] -> Улицы найдены!");
 
