@@ -31,6 +31,8 @@ namespace Client_StreetIndex
             Load += MainForm_Load;
         }
 
+
+
         private void MainForm_Load(object sender, EventArgs e)
         {
             this.ipServer = IPAddress.Parse(ip);

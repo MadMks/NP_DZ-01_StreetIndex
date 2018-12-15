@@ -41,6 +41,7 @@
             this.textBoxPostCode.Location = new System.Drawing.Point(12, 12);
             this.textBoxPostCode.Mask = "00000";
             this.textBoxPostCode.Name = "textBoxPostCode";
+            this.textBoxPostCode.ResetOnSpace = false;
             this.textBoxPostCode.Size = new System.Drawing.Size(100, 21);
             this.textBoxPostCode.TabIndex = 0;
             this.textBoxPostCode.ValidatingType = typeof(int);
