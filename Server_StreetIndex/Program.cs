@@ -14,8 +14,11 @@ namespace Server_StreetIndex
 {
     class Program
     {
-        static int port = 8000;
-        static string pathFile = "data.xml";
+        static readonly int SLEEP_TIME_THREAD = 5; // for debugging.
+
+        const int port = 8000;
+        const string ip = "127.0.0.1";
+        const string pathFile = "data.xml";
 
         static List<string> streets = null;
 
@@ -26,7 +29,7 @@ namespace Server_StreetIndex
                 SocketType.Stream,
                 ProtocolType.IP);
 
-            IPAddress ipAddress = IPAddress.Parse("127.0.0.1");
+            IPAddress ipAddress = IPAddress.Parse(ip);
             IPEndPoint ipEndPoint = new IPEndPoint(ipAddress, port);
 
 
@@ -39,7 +42,7 @@ namespace Server_StreetIndex
                 // Начинаем прослушивание.
                 socketServer.Listen(10);
 
-                Console.WriteLine("\nСервер запущен.\n");
+                Console.WriteLine("\n Сервер запущен.\n");
 
 
                 while (true)
@@ -56,24 +59,15 @@ namespace Server_StreetIndex
                     bytes = socketClient.Receive(buffer);
                     stringBuilder.Append(
                         Encoding.Unicode.GetString(buffer, 0, bytes));
-                    //do
-                    //{
-                    //    // Получаем данные.
-                    //    bytes += socketClient.Receive(
-                    //        buffer,
-                    //        buffer.Length,
-                    //        SocketFlags.None);
-                    //    stringBuilder.Append(
-                    //        Encoding.Unicode.GetString(buffer, 0, bytes));
 
-                    //} while (socketClient.Available > 0);
+                    // Вывод на сервере
+                    Console.WriteLine("\n[query] -> post code: " 
+                        + stringBuilder
+                        + "\n");
 
 
-                    // TEMP вывод на сервере
-                    Console.WriteLine("[test] -> post code: " + stringBuilder);
+                    // ----------------
 
-
-                    // Отправка ответа.
 
                     // Поиск почтового индекса в файле xml
                     streets = SearchStreetByCode(
@@ -82,26 +76,19 @@ namespace Server_StreetIndex
                     // если такой есть -> вернуть список улиц.
                     if (streets != null)
                     {
-                        // Иммитация долгой загрузки.
-                        for (int i = 0; i < 5; i++)
-                        {
-                            Thread.Sleep(1000);
-                            Console.WriteLine($"t: {i + 1}");
-                        }
+                        LongBootSimulation();
 
-                        Console.WriteLine("Улицы найдены!");
-                        //Console.ReadKey();
+                        Console.WriteLine("[info] -> Улицы найдены!");
+
+                        // Отправка ответа.
                         buffer = ObjectToByteArray(streets);
                         socketClient.Send(buffer);
 
-                        Console.WriteLine(" Ответ отправлен buffer = "
-                            + buffer.Length);
+                        Console.WriteLine("\n[info] -> Ответ отправлен buffer = "
+                            + buffer.Length
+                            + "\n");
                     }
 
-
-                    //string temp = "test " + stringBuilder;
-                    //buffer = Encoding.Unicode.GetBytes(temp);
-                    //socketClient.Send(buffer);
 
                     // Закрываем сокет.
                     socketClient.Shutdown(SocketShutdown.Both);
@@ -119,6 +106,25 @@ namespace Server_StreetIndex
 
         }
 
+
+        /// <summary>
+        /// Иммитация долгой загрузки.
+        /// </summary>
+        private static void LongBootSimulation()
+        {
+            for (int i = 0; i < SLEEP_TIME_THREAD; i++)
+            {
+                Thread.Sleep(1000);
+                Console.WriteLine($"[time]: {i + 1} (s)");
+            }
+        }
+
+
+        /// <summary>
+        /// Поиск улиц по почтовому индексу.
+        /// </summary>
+        /// <param name="postCode">Почтовый индекс.</param>
+        /// <returns>Список улиц.</returns>
         static List<string> SearchStreetByCode(int postCode)
         {
             List<string> streets = new List<string>();
@@ -132,7 +138,6 @@ namespace Server_StreetIndex
                 {
                     if (postCode == Int32.Parse(node.Attributes[0].Value))
                     {
-                        //streets.AddRange(node.ChildNodes as IEnumerable<string>);
                         for (int i = 0; i < node.ChildNodes.Count; i++)
                         {
                             streets.Add(node.ChildNodes[i].InnerText);
@@ -141,7 +146,7 @@ namespace Server_StreetIndex
                         return streets;
                     }
 
-                    Console.WriteLine("поиск ...");
+                    Console.WriteLine("[search] ...");
                 }
             }
             else
@@ -153,7 +158,11 @@ namespace Server_StreetIndex
             return null;
         }
 
-        // Конвертирование объекта в массив байтов.
+        /// <summary>
+        /// Конвертирование объекта в массив байтов.
+        /// </summary>
+        /// <param name="obj">Объект для конвертирования.</param>
+        /// <returns>Массив байтов.</returns>
         static byte[] ObjectToByteArray(object obj)
         {
             BinaryFormatter formatter = new BinaryFormatter();
@@ -166,9 +175,5 @@ namespace Server_StreetIndex
             }
         }
 
-        //static List<string> LoadingDataFromXML()
-        //{
-
-        //}
     }
 }

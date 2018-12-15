@@ -16,13 +16,14 @@ namespace Client_StreetIndex
 {
     public partial class MainForm : Form
     {
-        static int port = 8000;
+        const int port = 8000;
+        const string ip = "127.0.0.1";
+
         IPAddress ipServer;
         IPEndPoint ipEndPoint;
 
         Socket clientSocket = null;
 
-        //string strPostCode = null;
 
         public MainForm()
         {
@@ -32,7 +33,7 @@ namespace Client_StreetIndex
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            this.ipServer = IPAddress.Parse("127.0.0.1");
+            this.ipServer = IPAddress.Parse(ip);
             this.ipEndPoint = new IPEndPoint(ipServer, port);
         }
 
@@ -102,8 +103,7 @@ namespace Client_StreetIndex
             if (bytes > 0)
             {
                 streets = ByteArrayToListString(listBytes.ToArray());
-
-                //OutputDataToListBox(streets);
+                
                 this.listBoxStreets.Invoke(
                     new Action<List<string>>(this.OutputDataToListBox),
                     streets

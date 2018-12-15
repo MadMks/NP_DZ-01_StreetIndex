@@ -46,7 +46,7 @@
             // 
             this.buttonSend.Location = new System.Drawing.Point(118, 11);
             this.buttonSend.Name = "buttonSend";
-            this.buttonSend.Size = new System.Drawing.Size(103, 23);
+            this.buttonSend.Size = new System.Drawing.Size(156, 23);
             this.buttonSend.TabIndex = 1;
             this.buttonSend.Text = "Получить список";
             this.buttonSend.UseVisualStyleBackColor = true;
@@ -57,17 +57,19 @@
             this.listBoxStreets.FormattingEnabled = true;
             this.listBoxStreets.Location = new System.Drawing.Point(13, 40);
             this.listBoxStreets.Name = "listBoxStreets";
-            this.listBoxStreets.Size = new System.Drawing.Size(208, 121);
+            this.listBoxStreets.Size = new System.Drawing.Size(261, 121);
             this.listBoxStreets.TabIndex = 2;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(285, 172);
+            this.ClientSize = new System.Drawing.Size(286, 172);
             this.Controls.Add(this.listBoxStreets);
             this.Controls.Add(this.buttonSend);
             this.Controls.Add(this.textBoxPostCode);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "MainForm";
             this.Text = "Список улиц по индексу";
             this.ResumeLayout(false);
