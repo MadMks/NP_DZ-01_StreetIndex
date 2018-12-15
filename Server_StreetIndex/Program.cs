@@ -50,7 +50,7 @@ namespace Server_StreetIndex
                     StringBuilder stringBuilder = new StringBuilder();
                     int bytes = 0;  // Кол-во полученных байт.
                     // Буфер для получаемых данных.
-                    byte[] buffer = new byte[socketClient.Available];
+                    byte[] buffer = new byte[10];
 
                     // Загрузка получаемого сообщения.
                     bytes = socketClient.Receive(buffer);
@@ -60,15 +60,15 @@ namespace Server_StreetIndex
                     //{
                     //    // Получаем данные.
                     //    bytes += socketClient.Receive(
-                    //        buffer, 
-                    //        buffer.Length, 
+                    //        buffer,
+                    //        buffer.Length,
                     //        SocketFlags.None);
                     //    stringBuilder.Append(
                     //        Encoding.Unicode.GetString(buffer, 0, bytes));
 
                     //} while (socketClient.Available > 0);
 
-                    
+
                     // TEMP вывод на сервере
                     Console.WriteLine("[test] -> post code: " + stringBuilder);
 
@@ -112,6 +112,8 @@ namespace Server_StreetIndex
             catch (Exception ex)
             {
                 Console.WriteLine("\n\n[error] " + ex.Message);
+
+                Console.ReadKey();
             }
 
 

@@ -22,7 +22,7 @@ namespace Client_StreetIndex
 
         Socket clientSocket = null;
 
-        string strPostCode = null;
+        //string strPostCode = null;
 
         public MainForm()
         {
@@ -38,66 +38,80 @@ namespace Client_StreetIndex
 
         private void buttonSend_Click(object sender, EventArgs e)
         {
-            Task.Factory.StartNew( () => DataExchange(strPostCode));
+            string postCode = textBoxPostCode.Text;
 
-            
-
-
-            //socket.Shutdown(SocketShutdown.Both);
-            //socket.Close();
+            Task.Factory.StartNew( () => DataExchange(postCode));
         }
 
-        private void DataExchange(string strPostCode)
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="postCode"></param>
+        private void DataExchange(string postCode)
         {
-            this.clientSocket = new Socket(
+            try
+            {
+                this.clientSocket = new Socket(
                 AddressFamily.InterNetwork,
                 SocketType.Stream,
                 ProtocolType.IP);
 
-            clientSocket.Connect(ipEndPoint);
+                clientSocket.Connect(ipEndPoint);
 
-            if (clientSocket.Connected)
+                if (clientSocket.Connected)
+                {
+                    // Посылаем запрос (почтовый индекс).
+                    clientSocket.Send(Encoding.Unicode.GetBytes(postCode));
+
+
+                    ReceivingData();
+                }
+            }
+            catch (Exception ex)
             {
-                // Посылаем запрос (почтовый индекс).
-                strPostCode = textBoxPostCode.Text;
-                clientSocket.Send(Encoding.Unicode.GetBytes(strPostCode));
-                #region Testing_Async
-                //SocketAsyncEventArgs args = new SocketAsyncEventArgs();
-                //args.AcceptSocket = clientSocket;
-                //byte[] tt = Encoding.Unicode.GetBytes(strPostCode);
-                //args.SetBuffer(tt, 0, tt.Length);
-                //clientSocket.SendAsync(args);
-                #endregion
+                MessageBox.Show(ex.Message);
+            }
+        }
 
-                // Переменные для ответа.
-                byte[] buffer = new byte[1024];
-                int bytes = 0;
-                List<string> streets = null;
 
-                // Получаем ответ.
-                List<byte> listBytes = new List<byte>();
-                do
-                {
-                    bytes = clientSocket.Receive(
-                        buffer,
-                        buffer.Length,
-                        SocketFlags.None);
+        /// <summary>
+        /// 
+        /// </summary>
+        private void ReceivingData()
+        {
+            // Переменные для ответа.
+            byte[] buffer = new byte[1024];
+            int bytes = 0;
+            List<string> streets = null;
 
-                    listBytes.AddRange(buffer);
+            // Получаем ответ.
+            List<byte> listBytes = new List<byte>();
+            do
+            {
+                bytes = clientSocket.Receive(
+                    buffer,
+                    buffer.Length,
+                    SocketFlags.None);
 
-                    //Array.Clear(buffer, 0, buffer.Length);
-                } while (clientSocket.Available > 0);
+                listBytes.AddRange(buffer);
 
-                if (bytes > 0)
-                {
-                    streets = ByteArrayToListString(listBytes.ToArray());
+                //Array.Clear(buffer, 0, buffer.Length);
+            } while (clientSocket.Available > 0);
 
-                    OutputDataToListBox(streets);
-                }
-                else
-                {
-                    MessageBox.Show("По данному индексу улиц нет.");
-                }
+            if (bytes > 0)
+            {
+                streets = ByteArrayToListString(listBytes.ToArray());
+
+                //OutputDataToListBox(streets);
+                this.listBoxStreets.Invoke(
+                    new Action<List<string>>(this.OutputDataToListBox),
+                    streets
+                    );
+            }
+            else
+            {
+                MessageBox.Show("По данному индексу улиц нет.");
             }
         }
 
