@@ -30,6 +30,7 @@ namespace Server_StreetIndex
                 ProtocolType.IP);
 
             IPAddress ipAddress = IPAddress.Parse(ip);
+            //IPAddress ipAddress = IPAddress.Any;  // тест по сети.
             IPEndPoint ipEndPoint = new IPEndPoint(ipAddress, port);
 
 

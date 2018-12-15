@@ -18,6 +18,7 @@ namespace Client_StreetIndex
     {
         const int port = 8000;
         const string ip = "127.0.0.1";
+        //const string ip = "192.168.1.101";  // тест по сети.
 
         IPAddress ipServer;
         IPEndPoint ipEndPoint;
